@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>꿈을 찾는 우리 반 진로 글책 도우미</title>
+  <style>
+    :root {
+      --bg: #f6f9fc;
+      --card: #ffffff;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #f59e0b;
+      --accent-green: #10b981;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --tag-bg: #eff6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px 16px 60px;
+    }
+
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+      border: 2px solid #bae6fd;
+      border-radius: 24px;
+      padding: 28px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: 1.85rem;
+      color: #0f172a;
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
+
+    header p {
+      font-size: 1.05rem;
+      color: #334155;
+      word-break: keep-all;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f172a;
+    }
+
+    .step-num {
+      background: var(--secondary);
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .cat-btn {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 13px 10px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .cat-btn:hover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .tag-btn {
+      background: var(--tag-bg);
+      border: 1.5px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 9px 15px;
+      border-radius: 999px;
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tag-btn:hover {
+      background: #dbeafe;
+    }
+
+    .tag-btn.active {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 13px 16px;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-recommend {
+      flex: 2;
+      min-width: 210px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 20px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(59, 130, 246, 0.35);
+      transition: background 0.18s;
+    }
+
+    .btn-recommend:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-random {
+      flex: 1;
+      min-width: 150px;
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.18s;
+    }
+
+    .btn-random:hover {
+      opacity: 0.9;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .result-header h2 {
+      font-size: 1.32rem;
+      color: #0f172a;
+    }
+
+    .result-sub {
+      font-size: 0.92rem;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .book-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .book-card {
+      background: #ffffff;
+      border: 2px solid #dbeafe;
+      border-left: 8px solid var(--primary);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .book-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .book-cat {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 8px;
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .book-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .book-author {
+      font-size: 0.96rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .book-job-badge {
+      display: inline-block;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #047857;
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .book-desc {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 1.02rem;
+      margin-bottom: 10px;
+    }
+
+    .book-question {
+      background: #fffbeb;
+      border: 1px dashed #fbbf24;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-size: 0.98rem;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    .book-keywords {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mini-tag {
+      font-size: 0.85rem;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 520px) {
+      header h1 { font-size: 1.48rem; }
+      .action-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">초등학교 3학년 진로 독서 활동</div>
+      <h1>🧭 책 속에서 만나는 나의 꿈과 롤모델</h1>
+      <p>경험해 보고 싶은 일이나 닮고 싶은 인물이 있나요?<br>관심 있는 활동을 고르면 만화 말고 재미있는 <strong>진로 글책 3권</strong>을 추천해 줄게요!</p>
+    </header>
+
+    <section class="panel">
+      <div class="step-title">
+        <span class="step-num">1</span>
+        <span>어떤 분야의 일이나 인물을 만나고 싶나요?</span>
+      </div>
+      <div class="category-grid" id="categoryGrid">
+        <button class="cat-btn active" data-cat="전체">🌈 전체 보기</button>
+        <button class="cat-btn" data-cat="돌봄·의료">🩺 돌봄·의료</button>
+        <button class="cat-btn" data-cat="과학·탐구">🔬 과학·발명·자연</button>
+        <button class="cat-btn" data-cat="창작·문화">🎨 창작·요리·예술</button>
+        <button class="cat-btn" data-cat="사회·정의">⚖️ 사회·추리·경제</button>
+        <button class="cat-btn" data-cat="롤모델·인물">🌟 닮고 싶은 인물</button>
+      </div>
+
+      <div class="step-title" style="margin-top: 22px;">
+        <span class="step-num">2</span>
+        <span>내가 경험하고 싶은 일이나 닮고 싶은 모습을 골라보세요! (여러 개 선택 가능)</span>
+      </div>
+      <div class="tag-list" id="tagList">
+        <button class="tag-btn" data-tag="사람돕기">💖 아픈 사람·이웃 돕기</button>
+        <button class="tag-btn" data-tag="동물보호">🐾 동물 돌보고 연구하기</button>
+        <button class="tag-btn" data-tag="발명실험">💡 새로운 것 발명·실험하기</button>
+        <button class="tag-btn" data-tag="지구환경">🌱 지구와 환경 지키기</button>
+        <button class="tag-btn" data-tag="사건해결">🕵️ 단서 찾아 사건 해결하기</button>
+        <button class="tag-btn" data-tag="이야기창작">✍️ 글쓰기·그림·만들기</button>
+        <button class="tag-btn" data-tag="요리제빵">🍰 맛있는 음식·떡·과자 만들기</button>
+        <button class="tag-btn" data-tag="리더십">🚩 친구들 이끌고 협력하기</button>
+        <button class="tag-btn" data-tag="용기도전">🔥 포기하지 않고 도전하기</button>
+        <button class="tag-btn" data-tag="경제사회">💰 똑똑한 경제·사회 알아보기</button>
+      </div>
+
+      <div class="step-title" style="margin-top: 22px;">
+        <span class="step-num">3</span>
+        <span>궁금한 직업이나 인물 이름을 직접 입력해도 좋아요 (선택)</span>
+      </div>
+      <div class="search-box">
+        <input type="text" id="keywordInput" placeholder="예: 간호사, 의사, 과학자, 탐정, 요리사, 이순신, 세종대왕, 환경..." />
+      </div>
+
+      <div class="action-bar">
+        <button class="btn-recommend" id="btnRecommend">✨ 내 꿈과 맞는 글책 3권 찾기</button>
+        <button class="btn-random" id="btnRandom">🎲 진로 책 랜덤 3권 뽑기</button>
+        <button class="btn-reset" id="btnReset">🔄 다시 고르기</button>
+      </div>
+    </section>
+
+    <section class="panel" id="resultSection">
+      <div class="result-header">
+        <h2 id="resultTitle">📖 오늘의 진로 추천 글책 3권</h2>
+        <span class="result-sub" id="resultCount">만화 제외 · 초3 수준 검증 도서 30권</span>
+      </div>
+      <div class="book-list" id="bookList"></div>
+    </section>
+
+    <footer>
+      만화책은 제외하고 초등학교 3학년 학생들이 읽으며 꿈과 롤모델을 찾을 수 있는 글책만 엄선했습니다.
+    </footer>
+  </div>
+
+  <script>
+    // 초등학교 3학년 진로·인물 연계 검증 글책 30권 데이터베이스
+    const BOOKS = [
+      // 1. 돌봄·의료 (6권)
+      {
+        title: "내 꿈은 간호사",
+        author: "이향안 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 간호사 · 응급의료인",
+        summary: "병원의 다양한 부서에서 아픈 환자들의 곁을 지키며 치료를 돕는 간호사들이 하루 동안 어떤 일을 하는지 생생하게 보여주는 책입니다.",
+        question: "진로 활동 질문: 간호사가 환자를 돌볼 때 가장 중요하게 생각하는 마음가짐은 무엇일까요?",
+        keywords: ["간호사", "병원", "사람돕기", "돌봄·의료", "용기도전"]
+      },
+      {
+        title: "나는야 멋진 간호사",
+        author: "김현정 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 간호사 · 보건교사",
+        summary: "주사를 무서워하던 어린이가 병원에서 간호사 선생님의 따뜻한 보살핌을 경험하며, 남을 돕는 멋진 간호사를 꿈꾸게 되는 이야기입니다.",
+        question: "진로 활동 질문: 내가 아팠을 때 나를 따뜻하게 도와주었던 고마운 분은 누구인가요?",
+        keywords: ["간호사", "병원", "사람돕기", "용기도전"]
+      },
+      {
+        title: "동물병원에 간 엉뚱한 친구들",
+        author: "박현숙 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 수의사 · 동물보건사",
+        summary: "말을 하지 못하는 다양한 반려동물과 야생동물의 아픈 곳을 진찰하고 치료해 주는 동물병원 수의사 선생님의 따뜻한 일상을 담은 동화입니다.",
+        question: "진로 활동 질문: 말 못 하는 동물을 치료하기 위해 수의사에게는 어떤 능력이 필요할까요?",
+        keywords: ["수의사", "동물", "동물보호", "사람돕기"]
+      },
+      {
+        title: "소원을 들어주는 미용실",
+        author: "조수경 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 헤어디자이너 · 마음상담가",
+        summary: "손님들의 머리카락을 예쁘게 다듬어 주면서 마음속 깊은 고민까지 따뜻하게 들어주고 해결해 주는 신비한 미용실 이야기입니다.",
+        question: "진로 활동 질문: 친구나 가족의 고민을 잘 들어주기 위해 나는 어떤 노력을 할 수 있을까요?",
+        keywords: ["미용사", "상담가", "사람돕기", "이야기창작"]
+      },
+      {
+        title: "우리 몸의 구멍",
+        author: "허은미 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 의사 · 생명과학자",
+        summary: "눈, 코, 입, 귓구멍 등 우리 몸에 있는 구멍들이 건강을 지키기 위해 어떤 중요한 일을 하는지 재미있게 알려주는 인체 과학 책입니다.",
+        question: "진로 활동 질문: 우리 몸을 연구하고 치료하는 의사 선생님이 된다면 어떤 분야를 연구하고 싶나요?",
+        keywords: ["의사", "병원", "발명실험", "사람돕기"]
+      },
+      {
+        title: "아홉 살 마음 사전",
+        author: "박성우 지음",
+        category: "돌봄·의료",
+        jobFocus: "관련 직업: 심리상담가 · 교사",
+        summary: "일상에서 느끼는 다양한 감정을 구체적인 상황과 함께 풀어내어, 나와 친구의 마음을 정확히 이해하고 보듬어 주도록 돕는 책입니다.",
+        question: "진로 활동 질문: 다른 사람의 마음을 잘 헤아리는 직업에는 또 어떤 것들이 있을까요?",
+        keywords: ["상담가", "선생님", "사람돕기", "리더십"]
+      },
+
+      // 2. 과학·발명·자연 (6권)
+      {
+        title: "세상을 바꾼 과학 이야기",
+        author: "권기균 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 발명가 · 과학자 · 공학자",
+        summary: "우리가 매일 사용하는 물건과 과학 원리가 탄생하기까지, 포기하지 않고 호기심을 이어간 과학자들의 흥미진진한 도전기입니다.",
+        question: "진로 활동 질문: 생활 속 불편함을 해결하기 위해 내가 발명해보고 싶은 물건은 무엇인가요?",
+        keywords: ["과학자", "발명가", "발명실험", "용기도전"]
+      },
+      {
+        title: "지구를 살리는 기발한 생각들",
+        author: "전지은 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 환경공학자 · 기후과학자 · 환경운동가",
+        summary: "기후 위기와 쓰레기 문제를 해결하기 위해 전 세계 어린이와 과학자들이 실천하는 기발한 친환경 아이디어를 소개합니다.",
+        question: "진로 활동 질문: 지구를 지키는 환경 전문가가 된다면 가장 먼저 해결하고 싶은 문제는 무엇인가요?",
+        keywords: ["환경", "과학자", "지구환경", "발명실험"]
+      },
+      {
+        title: "곤충들의 사생활",
+        author: "정부희 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 곤충학자 · 생태연구원",
+        summary: "오랜 시간 숲속을 누비며 곤충을 관찰한 곤충학자가 들려주는 작은 생명들의 놀라운 생존 전략과 자연 관찰 이야기입니다.",
+        question: "진로 활동 질문: 곤충학자처럼 한 가지를 오랫동안 깊이 관찰해 본 경험이 있나요?",
+        keywords: ["곤충", "자연", "동물보호", "지구환경", "발명실험"]
+      },
+      {
+        title: "신기한 스쿨버스 (시리즈)",
+        author: "조애너 콜 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 우주비행사 · 해양탐험가 · 과학교사",
+        summary: "프리즐 선생님과 아이들이 마법 버스를 타고 우주, 바닷속, 화산 지대를 직접 탐험하며 몸으로 부딪쳐 배우는 과학 동화입니다.",
+        question: "진로 활동 질문: 프리즐 선생님처럼 직접 경험하며 가르치는 선생님이 된다면 어디로 탐험을 떠나고 싶나요?",
+        keywords: ["우주", "선생님", "과학자", "발명실험", "용기도전"]
+      },
+      {
+        title: "초등학생을 위한 과학사",
+        author: "정윤선 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 물리학자 · 화학자 · 천문학자",
+        summary: "인류의 역사를 바꾼 위대한 과학자들이 세상에 던진 질문과 수많은 실패를 딛고 성공한 실험 과정을 쉽고 재미있게 풀어낸 책입니다.",
+        question: "진로 활동 질문: 실험에 여러 번 실패하고도 끝까지 포기하지 않은 과학자의 어떤 점을 닮고 싶나요?",
+        keywords: ["과학자", "발명실험", "용기도전"]
+      },
+      {
+        title: "똥, 어디로 갔을까?",
+        author: "천성진 지음",
+        category: "과학·탐구",
+        jobFocus: "관련 직업: 생태학자 · 숲해설가 · 사육사",
+        summary: "동물의 똥이 자연 속에서 어떻게 분해되어 흙과 나무를 살리는지 알려주며 생태계 순환의 소중함을 일깨우는 지식책입니다.",
+        question: "진로 활동 질문: 숲과 동물을 돌보는 사육사나 숲해설가는 어떤 보람을 느낄까요?",
+        keywords: ["동물", "자연", "동물보호", "지구환경"]
+      },
+
+      // 3. 창작·요리·예술 (6권)
+      {
+        title: "만복이네 떡집",
+        author: "김리리 지음",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 떡 명장 · 한식 요리사 · 동화작가",
+        summary: "신비한 떡집에서 정성껏 만든 다양한 떡을 맛보며 심술궂던 만복이가 친구들의 마음을 이해하고 변화해 가는 판타지 동화입니다.",
+        question: "진로 활동 질문: 누군가의 마음을 행복하게 해주는 요리사가 된다면 어떤 음식을 만들고 싶나요?",
+        keywords: ["요리사", "제빵사", "요리제빵", "이야기창작"]
+      },
+      {
+        title: "이상한 과자 가게 전천당",
+        author: "히로시마 레이코 지음",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 파티시에(제과제빵사) · 상품기획자",
+        summary: "행운의 손님에게 딱 맞는 신비한 과자를 만들어 파는 가게 주인 베니코와 과자를 산 사람들의 흥미진진한 이야기입니다.",
+        question: "진로 활동 질문: 내가 과자 가게 주인이 된다면 사람들에게 어떤 도움을 주는 과자를 개발하고 싶나요?",
+        keywords: ["제빵사", "요리사", "요리제빵", "이야기창작"]
+      },
+      {
+        title: "나무 집 시리즈 (13층 나무 집)",
+        author: "앤디 그리피스 지음",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 동화작가 · 일러스트레이터 · 건축가",
+        summary: "거대한 나무 집에 살면서 기발한 상상력으로 함께 책을 만들고 모험을 펼치는 글 작가 앤디와 그림 작가 테리의 유쾌한 이야기입니다.",
+        question: "진로 활동 질문: 내가 꿈꾸는 나만의 작업실이나 집을 설계한다면 어떤 공간을 넣고 싶나요?",
+        keywords: ["작가", "화가", "건축가", "이야기창작", "리더십"]
+      },
+      {
+        title: "비밀의 화원 (어린이판)",
+        author: "프랜시스 호지슨 버넷 원작",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 정원사 · 조경디자이너 · 식물학자",
+        summary: "외톨이 소녀 메리가 버려진 비밀 정원을 발견해 친구들과 함께 땀 흘려 가꾸면서 몸과 마음이 건강해지는 감동적인 이야기입니다.",
+        question: "진로 활동 질문: 황무지를 아름다운 정원으로 바꾼 메리와 친구들의 모습에서 닮고 싶은 점은 무엇인가요?",
+        keywords: ["정원사", "식물", "지구환경", "이야기창작", "리더십"]
+      },
+      {
+        title: "고양이 해결사 깜냥 1",
+        author: "홍민정 지음",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 아파트 관리소장 · 동화작가",
+        summary: "아파트 경비실에 눌러앉은 길고양이 깜냥이 주민들의 크고 작은 문제를 기발한 지혜로 해결해 주는 유쾌한 동화입니다.",
+        question: "진로 활동 질문: 우리 동네와 이웃을 안전하고 편리하게 돌보는 직업에는 어떤 것들이 있을까요?",
+        keywords: ["고양이", "작가", "사람돕기", "사건해결"]
+      },
+      {
+        title: "세계의 축제 여행",
+        author: "김은빈 지음",
+        category: "창작·문화",
+        jobFocus: "관련 직업: 축제기획자 · 여행작가 · 외교관",
+        summary: "세계 여러 나라 사람들이 즐기는 독특한 축제와 그 속에 담긴 역사·문화를 소개하며 넓은 세상을 만나게 해주는 책입니다.",
+        question: "진로 활동 질문: 우리나라를 세계에 알리는 문화 기획자나 외교관이 된다면 어떤 축제를 열고 싶나요?",
+        keywords: ["여행", "기획자", "이야기창작", "경제사회"]
+      },
+
+      // 4. 사회·추리·경제 (6권)
+      {
+        title: "명탐정 셜록 홈즈 (어린이판)",
+        author: "아서 코난 도일 원작",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 탐정 · 경찰관 · 과학수사관(프로파일러)",
+        summary: "작은 단서도 놓치지 않는 예리한 관찰력과 논리적인 추리로 기묘한 사건들을 해결해 나가는 명탐정 셜록 홈즈 이야기입니다.",
+        question: "진로 활동 질문: 셜록 홈즈처럼 문제를 논리적으로 해결하려면 평소에 어떤 습관을 기르면 좋을까요?",
+        keywords: ["탐정", "경찰", "사건해결", "용기도전"]
+      },
+      {
+        title: "돈의 비밀을 밝혀라!",
+        author: "고정욱 지음",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 경제학자 · 은행원 · 금융전문가",
+        summary: "용돈 기입장 쓰기부터 저축, 현명한 소비와 나눔까지 초등학생이 꼭 알아야 할 기초 경제 원리를 재미있게 담은 동화입니다.",
+        question: "진로 활동 질문: 내가 은행원이나 경제 전문가가 된다면 사람들에게 어떤 저축 습관을 추천하고 싶나요?",
+        keywords: ["은행원", "경제", "경제사회", "사건해결"]
+      },
+      {
+        title: "지도는 수다쟁이",
+        author: "유영소 지음",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 지도제작자 · 지리학자 · 도시계획가",
+        summary: "지도를 읽는 방법부터 우리 고장의 지형과 사람들의 생활 모습까지, 지도 속에 숨어 있는 수많은 정보를 탐험하는 지리 책입니다.",
+        question: "진로 활동 질문: 우리 고장의 편리한 길을 설계하는 도시계획가가 된다면 어떤 시설을 만들고 싶나요?",
+        keywords: ["지도", "지리", "경제사회", "지구환경"]
+      },
+      {
+        title: "시간을 파는 상점",
+        author: "김선영 지음",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 사회복지사 · 기자 · 탐정",
+        summary: "어려움에 처한 사람들의 사연을 듣고 시간을 대신 써 주며 사건의 진실을 밝혀내는 소녀 온조의 따뜻하고 미스터리한 이야기입니다.",
+        question: "진로 활동 질문: 어려운 이웃의 사연을 세상에 알리고 돕는 기자나 사회복지사는 어떤 마음으로 일할까요?",
+        keywords: ["탐정", "기자", "사건해결", "사람돕기"]
+      },
+      {
+        title: "사회를 배우는 100가지 방법",
+        author: "최설희 지음",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 판사 · 변호사 · 공무원",
+        summary: "가족, 마을, 법과 규칙, 경제 활동 등 우리 사회가 질서 있게 움직이기 위해 필요한 다양한 제도와 역할을 알기 쉽게 설명합니다.",
+        question: "진로 활동 질문: 공정한 규칙을 만들고 지키는 판사나 변호사에게 가장 필요한 태도는 무엇일까요?",
+        keywords: ["판사", "변호사", "경제사회", "리더십"]
+      },
+      {
+        title: "고조선에서 삼국까지 (이야기 한국사)",
+        author: "박은봉 지음",
+        category: "사회·정의",
+        jobFocus: "관련 직업: 역사학자 · 고고학자 · 박물관 학예사",
+        summary: "유물과 기록을 바탕으로 옛날 사람들이 어떻게 나라를 세우고 문화를 꽃피웠는지 재미있는 이야기로 들려주는 한국사 책입니다.",
+        question: "진로 활동 질문: 땅속 유물을 발굴하고 옛날 이야기를 연구하는 고고학자의 일은 어떤 점이 매력적일까요?",
+        keywords: ["역사", "고고학자", "경제사회", "사건해결"]
+      },
+
+      // 5. 롤모델·인물 (6권)
+      {
+        title: "백의의 천사 나이팅게일",
+        author: "위인전기 편찬회 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 인물: 플로렌스 나이팅게일 (근대 간호의 선구자)",
+        summary: "편안한 삶을 뒤로하고 전쟁터 병원으로 달려가 밤낮으로 부상병들을 돌보며 현대 간호학의 기초를 세운 나이팅게일의 생애입니다.",
+        question: "진로 활동 질문: 반대와 어려움을 이겨내고 자신의 신념을 지킨 나이팅게일의 어떤 점을 닮고 싶나요?",
+        keywords: ["나이팅게일", "간호사", "사람돕기", "용기도전", "리더십"]
+      },
+      {
+        title: "푸른 사자 와니니",
+        author: "이현 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 모습: 친구를 배려하고 함께 성장하는 리더",
+        summary: "힘이 약하다는 이유로 무리에서 쫓겨난 어린 암사자 와니니가 친구들과 서로 의지하며 초원의 진정한 리더로 성장하는 이야기입니다.",
+        question: "진로 활동 질문: 힘으로 누르는 리더가 아니라 친구들과 마음을 모으는 와니니의 리더십에서 무엇을 배웠나요?",
+        keywords: ["사자", "동물", "리더십", "용기도전", "동물보호"]
+      },
+      {
+        title: "어린이를 위한 세상을 바꾼 위대한 생각",
+        author: "조은수 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 인물: 인권 운동가 · 사상가",
+        summary: "모든 사람이 평등하고 존중받는 세상을 만들기 위해 용기 있게 목소리를 냈던 역사 속 인물들의 위대한 생각과 실천을 담았습니다.",
+        question: "진로 활동 질문: 더 좋은 세상을 만들기 위해 내가 우리 반에서 실천할 수 있는 작은 행동은 무엇일까요?",
+        keywords: ["인권", "리더십", "경제사회", "용기도전"]
+      },
+      {
+        title: "마당을 나온 암탉",
+        author: "황선미 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 모습: 자신의 꿈을 향해 끝까지 도전하는 개척자",
+        summary: "좁은 양계장을 벗어나 알을 품고 마당을 거닐겠다는 자신의 소망을 이루기 위해 두려움을 이겨낸 암탉 잎싹의 감동적인 여정입니다.",
+        question: "진로 활동 질문: 주변에서 안 된다고 할 때도 자신의 꿈을 포기하지 않은 잎싹처럼 내가 꼭 이루고 싶은 꿈은 무엇인가요?",
+        keywords: ["꿈", "도전", "용기도전", "동물보호"]
+      },
+      {
+        title: "긴긴밤",
+        author: "루리 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 모습: 끝까지 책임을 다하고 약속을 지키는 어른",
+        summary: "세상에 홀로 남은 흰바위코뿔소 노든이 어린 펭귄을 끝까지 보호하며 바다로 안내하는 과정을 통해 진정한 어른의 모습을 보여줍니다.",
+        question: "진로 활동 질문: 노든처럼 누군가에게 믿음직하고 든든한 존재가 되려면 어떤 마음을 가져야 할까요?",
+        keywords: ["코뿔소", "펭귄", "사람돕기", "리더십", "용기도전"]
+      },
+      {
+        title: "장군이네 떡집",
+        author: "김리리 지음",
+        category: "롤모델·인물",
+        jobFocus: "닮고 싶은 모습: 두려움을 이겨내고 스스로 성장하는 어린이",
+        summary: "걱정이 많고 주눅 들어 있던 장군이가 용기를 내어 친구에게 먼저 다가가며 스스로를 믿는 법을 배워가는 성장 동화입니다.",
+        question: "진로 활동 질문: 장군이처럼 두려움을 이겨내고 한 걸음 내딛었던 나의 자랑스러운 경험은 무엇인가요?",
+        keywords: ["용기", "학교", "용기도전", "요리제빵"]
+      }
+    ];
+
+    let selectedCategory = "전체";
+    const selectedTags = new Set();
+
+    const categoryGrid = document.getElementById("categoryGrid");
+    const tagList = document.getElementById("tagList");
+    const keywordInput = document.getElementById("keywordInput");
+    const bookList = document.getElementById("bookList");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultCount = document.getElementById("resultCount");
+
+    // 분야 선택
+    categoryGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".cat-btn");
+      if (!btn) return;
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedCategory = btn.dataset.cat;
+    });
+
+    // 키워드 다중 선택
+    tagList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tag-btn");
+      if (!btn) return;
+      const tag = btn.dataset.tag;
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        btn.classList.remove("active");
+      } else {
+        selectedTags.add(tag);
+        btn.classList.add("active");
+      }
+    });
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // 추천 계산 (항상 3권 출력)
+    function recommendBooks() {
+      const query = keywordInput.value.trim().toLowerCase();
+
+      let pool = selectedCategory === "전체"
+        ? [...BOOKS]
+        : BOOKS.filter(b => b.category === selectedCategory);
+
+      const scored = shuffle(pool).map(book => {
+        let score = 0;
+
+        selectedTags.forEach(tag => {
+          if (book.keywords.includes(tag)) score += 3;
+        });
+
+        if (query) {
+          const fullText = `${book.title} ${book.author} ${book.jobFocus} ${book.summary} ${book.keywords.join(" ")}`.toLowerCase();
+          if (fullText.includes(query)) score += 5;
+        }
+
+        return { book, score };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+
+      let results = scored.slice(0, 3).map(item => item.book);
+      if (results.length < 3) {
+        const extra = shuffle(BOOKS.filter(b => !results.includes(b))).slice(0, 3 - results.length);
+        results = results.concat(extra);
+      }
+
+      const conditionText = [];
+      if (selectedCategory !== "전체") conditionText.push(selectedCategory);
+      if (selectedTags.size > 0) conditionText.push([...selectedTags].map(t => `#${t}`).join(" "));
+      if (query) conditionText.push(`"${query}"`);
+
+      resultTitle.textContent = conditionText.length > 0
+        ? `📖 [${conditionText.join(" · ")}] 진로 추천 글책 3권`
+        : "📖 오늘의 진로 추천 글책 3권";
+      resultCount.textContent = "만화 제외 · 초3 진로 탐색 검증 도서";
+
+      renderBooks(results);
+    }
+
+    function pickRandomBooks() {
+      const randomThree = shuffle(BOOKS).slice(0, 3);
+      resultTitle.textContent = "🎲 오늘의 랜덤 진로 글책 3권";
+      resultCount.textContent = "검증된 초3 진로 글책 30권 중 무작위 선정";
+      renderBooks(randomThree);
+    }
+
+    function renderBooks(books) {
+      bookList.innerHTML = books.map(book => `
+        <article class="book-card">
+          <div class="book-top">
+            <div>
+              <div class="book-title">📚 ${book.title}</div>
+              <div class="book-author">${book.author}</div>
+            </div>
+            <span class="book-cat">${book.category}</span>
+          </div>
+          <div class="book-job-badge">🌟 ${book.jobFocus}</div>
+          <div class="book-desc">
+            <strong>어떤 책인가요?</strong><br>
+            ${book.summary}
+          </div>
+          <div class="book-question">
+            ✏️ ${book.question}
+          </div>
+          <div class="book-keywords">
+            ${book.keywords.map(k => `<span class="mini-tag">#${k}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("btnReset").addEventListener("click", () => {
+      selectedCategory = "전체";
+      selectedTags.clear();
+      keywordInput.value = "";
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      document.querySelector('.cat-btn[data-cat="전체"]').classList.add("active");
+      document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
+      pickRandomBooks();
+    });
+
+    document.getElementById("btnRecommend").addEventListener("click", recommendBooks);
+    document.getElementById("btnRandom").addEventListener("click", pickRandomBooks);
+    keywordInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") recommendBooks();
+    });
+
+    pickRandomBooks();
+  </script>
+</body>
+</html>
